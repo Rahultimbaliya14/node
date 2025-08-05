@@ -80,6 +80,11 @@ exports.createEmail = async (req, res) => {
   }
 }
 
+const saveEmailToDB = async (email) => {
+  const newEmail = new emailModel({ email, createdAt: new Date() });
+  return await newEmail.save();
+};
+
 exports.getEmails = async (req, res) => {
   try {
     const emails = await emailModel.find().sort({ createdAt: -1 });
