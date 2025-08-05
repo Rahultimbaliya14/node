@@ -13,5 +13,6 @@ router.get("/feedback/getAll", (req, res) => feedback.getAll(req, res));
 
 // Mail routes
 router.post("/mail/send", (req, res) => mailer.sendMail(req, res));
+router.get("/mail/getAll", (req, res) => mailer.getEmails(req, res));   
 
 module.exports = router;

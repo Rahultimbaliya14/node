@@ -6,7 +6,6 @@ require("dotenv").config({ path: ".env" });
 
 const app = require("express")();
 
-// Add CORS middleware BEFORE your routes
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
@@ -21,7 +20,6 @@ app.use((req, res, next) => {
 });
 
 
-// CORS configuration
 const corsOptions = {
   origin: process.env.CORS_ORIGINS ? process.env.CORS_ORIGINS.split(',').map(origin => origin.trim()) : [
     'http://localhost:3000',

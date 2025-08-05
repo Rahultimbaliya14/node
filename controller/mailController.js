@@ -1,4 +1,6 @@
 const nodemailer = require("nodemailer"); 
+const mongoose = require("mongoose");
+const emailModel = require('../models/email');
 
 exports.sendMail = async (req, res) => {
   const { email } = req.body;
@@ -60,10 +62,35 @@ Rahul P Timbaliya`,
       ],
     });
 
+    await saveEmailToDB(email);
     console.log("Message sent:", info.messageId);
     res.status(200).json({ message: "Email sent successfully", messageId: info.messageId });
   } catch (error) {
     console.error("Error sending email:", error);
     res.status(500).json({ message: "Failed to send email", error: error.message });
   }
+};
+
+exports.createEmail = async (req, res) => {
+  try {
+    const newEmail = await saveEmailToDB(req.body.email);
+    res.status(201).json(newEmail);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
+
+
+exports.getEmails = async (req, res) => {
+  try {
+    const emails = await emailModel.find().sort({ createdAt: -1 });
+    res.status(200).json(emails);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const saveEmailToDB = async (email) => {
+  const newEmail = new emailModel({ email, createdAt: new Date() });
+  return await newEmail.save();
 };
