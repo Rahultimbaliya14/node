@@ -5,7 +5,7 @@ const cors = require("cors");
 require("dotenv").config({ path: ".env" });
 
 const app = require("express")();
-
+app.use(bodyParser.json());
 // CORS configuration
 const corsOptions = {
   origin: process.env.CORS_ORIGINS ? process.env.CORS_ORIGINS.split(',').map(origin => origin.trim()) : [
@@ -20,10 +20,6 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-app.use(bodyParser.json());
-
 app.use('/api', router);
-
-
 
 module.exports = app;
