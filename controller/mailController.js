@@ -80,7 +80,6 @@ exports.createEmail = async (req, res) => {
   }
 }
 
-
 exports.getEmails = async (req, res) => {
   try {
     const emails = await emailModel.find().sort({ createdAt: -1 });
@@ -90,7 +89,15 @@ exports.getEmails = async (req, res) => {
   }
 };
 
-const saveEmailToDB = async (email) => {
-  const newEmail = new emailModel({ email, createdAt: new Date() });
-  return await newEmail.save();
+exports.deleteEmail = async (req, res) => {
+  const { id } = req.params; 
+  try {
+    const deletedEmail = await emailModel.findByIdAndDelete(id);
+    if (!deletedEmail) {
+      return res.status(404).json({ message: "Email not found" });
+    }
+    res.status(200).json({ message: "Email deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };

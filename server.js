@@ -8,7 +8,7 @@ mongoose.connect(process.env.DATABASE_URL, {
 .then(() => console.log("✅ Mongoose connected"))
 .catch((err) => {
   console.error("❌ Mongoose connection error:", err.message);
-  process.exit(1); // Exit the app if connection fails
+  process.exit(1);
 });
 
 app.set("port", process.env.PORT || 80);
