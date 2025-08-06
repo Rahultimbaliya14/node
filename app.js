@@ -1,4 +1,5 @@
 const router = require("./router/api");
+const routerAuth = require("./router/auth");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 
@@ -29,11 +30,12 @@ const corsOptions = {
     'http://127.0.0.1:5173'
   ],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'X-Requested-With']
+  allowedHeaders: ['Content-Type', 'X-Requested-With', 'Authorization']
 };
 
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use('/api', router);
+app.use('/auth', routerAuth);
 
 module.exports = app;
