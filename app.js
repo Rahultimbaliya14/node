@@ -1,9 +1,9 @@
+
+require("dotenv").config({ path: ".env" });
 const router = require("./router/api");
 const routerAuth = require("./router/auth");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-
-require("dotenv").config({ path: ".env" });
 
 const app = require("express")();
 
