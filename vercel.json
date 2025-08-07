@@ -17,6 +17,5 @@
             "maxDuration": 10,
             "memory": 512
         }
-    },
-    "excludeFiles": "{.next,*.cache,node_modules,public,app}/**"
+    }
 }
