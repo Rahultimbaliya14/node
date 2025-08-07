@@ -1,10 +1,12 @@
 const express = require("express");
 const { authenticateToken } = require('../middleware/auth');
+const imageRouter = require("./image");
 
 const router = express.Router();
 const feedback = require("../controller/feedbackController");
 const mailer = require("../controller/mailController");
 
+router.use('/image', authenticateToken, imageRouter);
 // Public routes
 router.post("/feedback/create", (req, res) => feedback.create(req, res));
 router.post("/mail/send", (req, res) => mailer.sendMail(req, res));
