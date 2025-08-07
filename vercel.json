@@ -1,11 +1,22 @@
 {
     "version": 2,
-    "builds": [{
-        "src": "server.js",
-        "use": "@vercel/node"
-    }],
-    "routes": [{
-        "src": "/(.*)",
-        "dest": "server.js"
-    }]
+    "builds": [
+        {
+            "src": "server.js",
+            "use": "@vercel/node"
+        }
+    ],
+    "routes": [
+        {
+            "src": "/(.*)",
+            "dest": "server.js"
+        }
+    ],
+    "functions": {
+        "api/**": {
+            "maxDuration": 10,
+            "memory": 512
+        }
+    },
+    "excludeFiles": "{.next,*.cache,node_modules,public,app}/**"
 }
