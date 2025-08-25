@@ -11,7 +11,7 @@ router.post("/feedback/create", (req, res) => feedback.create(req, res));
 router.post("/mail/send", (req, res) => mailer.sendMail(req, res));
 
 router.get("/train/getTrainInfo/:number", (req, res) => trainController.getTrainInfo(req, res));
-
+router.get("/train/getTrainRouteInfo/:number", (req, res) => trainController.getTrainRoutInfo(req, res));
 // Protected routes
 router.get("/feedback/getAll", authenticateToken, (req, res) => feedback.getAll(req, res));
 router.delete("/feedback/delete/:id", authenticateToken, (req, res) => feedback.deletedFeedback(req, res));
