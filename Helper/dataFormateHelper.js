@@ -71,6 +71,32 @@ class DataFormatHelper {
             }
             return array;
     }
+
+    currentTrainStatus(trainData){
+        const data = {}
+        data.currentTrainStation = trainData.trainCurrentPosition["Last Station/Location"];
+        data.currentTrainStationSTA = trainData.trainCurrentPosition["Last Station/Location Scheduled Time"];
+        data.currentTrainStationATA = trainData.trainCurrentPosition["Last Station/Location Actual Time"];
+        data.currentTrainStationDelay = trainData.trainCurrentPosition["Last Station/Location Delay"];
+        data.trainStatus = trainData.trainCurrentPosition["Train Status/Last Location"];
+
+        const arr = []
+        trainData.etaTable.forEach((eta) => {
+            arr.push({
+                station: eta["Station Name"] +" - "+ eta["Station"],
+                distance: eta["Distance"],
+                sta: eta["STA"],
+                eta: eta["ETA"],
+                std: eta["STD"],
+                etd: eta["ETD"],
+                platformNumber: eta["PF"],
+                arrived: eta["Has Arrived ?"],
+                delay: eta["Delay"]
+            });
+        });
+        data.station = arr;
+        return data;
+    }
 }   
 
 module.exports = new DataFormatHelper();
