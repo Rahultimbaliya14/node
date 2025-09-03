@@ -52,7 +52,7 @@ exports.getTrainCurrentLocation = async (req, res) => {
             return res.status(404).json({ message: "Train not found" });
         }
         else {
-            const date = formatDate(new Date(req.body.date));
+            const date = req.body.date;
             const baseUrl = `https://railjournal.in/RailRadar/train-profile.php?trainNo=${trainNumber}&start_date=${date}`;
             try {
                 const response = await axios.get(baseUrl);
