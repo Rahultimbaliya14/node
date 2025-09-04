@@ -34,10 +34,7 @@ exports.getTrainRoutInfo = async (req, res) => {
         }
         else {
             const envurl = process.env.GET_TRAIN_ROUTE_INFO;
-             console.log(envurl);
             const URL_Train = envurl.replace('{trainId}', formattedData.trainId);
-            console.log(URL_Train
-            )
             const response = await axios.get(URL_Train);
             const routeData = response.data;
             const array = DataFormatHelper.getTrainRoutInfo(routeData);

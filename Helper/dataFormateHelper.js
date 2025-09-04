@@ -51,7 +51,14 @@ class DataFormatHelper {
 
     getTrainRoutInfo(trainData) {
         let data = trainData.split("#^");
-        let data1 = data[1].split("~^");
+        let data1 = [];
+        if(data.length > 1){
+            data1 = data[1].split("~^");
+        }
+        else{
+            data1 = data[0].split("~^");
+        }
+        
         let array = [];
         for (let i = 0; i < data1.length; i++) {
             let data2 = data1[i].split("~");
