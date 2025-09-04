@@ -80,11 +80,25 @@ exports.getTrainCurrentLocation = async (req, res) => {
     }
 };
 
+exports.getPNRInfo = async (req, res) => {
+    const pnrNumber = req.body.pnrNumber;
+    const envurl = process.env.GET_PNR_INFO;
+     try {
+    const baseUrl = envurl.replace('{pnrNumber}', pnrNumber);
+    const requestBody = {
+      proPlanName: "CP8",
+      emailId: "",
+      tempToken: ""
+    };
 
-function formatDate(date) {
-    return date.toLocaleDateString("en-GB", {
-        day: "2-digit",
-        month: "short",
-        year: "2-digit"
-    }).replace(/ /g, "-");
+    const response = await axios.post(baseUrl, requestBody);
+    const pnrData = response.data;
+
+    const formattedData = DataFormatHelper.getPNRInfo(pnrData);
+
+    res.json(formattedData);
+  } catch (error) {
+    console.error("Error fetching PNR data:", error.message);
+    res.status(500).json({ error: "Failed to fetch PNR info" });
+  }
 }

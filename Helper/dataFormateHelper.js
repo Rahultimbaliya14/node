@@ -52,13 +52,13 @@ class DataFormatHelper {
     getTrainRoutInfo(trainData) {
         let data = trainData.split("#^");
         let data1 = [];
-        if(data.length > 1){
+        if (data.length > 1) {
             data1 = data[1].split("~^");
         }
-        else{
+        else {
             data1 = data[0].split("~^");
         }
-        
+
         let array = [];
         for (let i = 0; i < data1.length; i++) {
             let data2 = data1[i].split("~");
@@ -109,6 +109,60 @@ class DataFormatHelper {
             }
         }
     }
-}
+    getPNRInfo(pnrData) {
+        if (pnrData.data && pnrData.data.pnrResponse) {
+            let data = {
+                pnr: pnrData.data.pnrResponse.pnr,
+                trainNumber: pnrData.data.pnrResponse.trainNo,
+                trainName: pnrData.data.pnrResponse.trainName,
+                dateOfJourney: pnrData.data.pnrResponse.doj,
+                from: `${pnrData.data.pnrResponse.boardingStationName} - ${pnrData.data.pnrResponse.from}`,
+                to: `${pnrData.data.pnrResponse.reservationUptoName} - ${pnrData.data.pnrResponse.to}`,
+                boardingPoint: `${pnrData.data.pnrResponse.boardingStationName} - ${pnrData.data.pnrResponse.boardingPoint}`,
+                departureTime: pnrData.data.pnrResponse.departureTime,
+                arrivalTime: pnrData.data.pnrResponse.arrivalTime,
+                duration: pnrData.data.pnrResponse.duration,
+                boardingPointPlatformNumber: pnrData.data.pnrResponse.expectedPlatformNo,
+                coachPosition: pnrData.data.pnrResponse.coachPosition,
+               
+            };
+            if (pnrData.data.pnrResponse.passengerStatus) {
+                let array = [];
+                pnrData.data.pnrResponse.passengerStatus.forEach((passenger) => {
+                    array.push({
+                        number: passenger.number,
+                        Status: passenger.confirmTktStatus,
+                        coach: passenger.coach,
+                        berth: passenger.berth,
+                        bookingStatus: passenger.bookingStatus,
+                        bookingStatusCurrent: passenger.bookingStatusNew,
+                        bookingBerthNo: passenger.bookingBerthNo,
+                        bookingCoachId: passenger.bookingCoachId,
+                        bookingBerthCode: passenger.bookingBerthCode,
+                        currentBerthNo: passenger.currentBerthNo,
+                        currentCoachId: passenger.currentCoachId,
+                        currentStatus: passenger.currentStatus,
+                        currentBerthCode: passenger.currentBerthCode,
+                        currentStatusCurrent: passenger.currentStatusNew
+
+                    });
+                });
+                data.passengerStatus = array;
+            }
+            let obj = {
+                    bookingDate: pnrData.data.pnrResponse.bookingDate,
+                    bookingFare: pnrData.data.pnrResponse.bookingFare,
+                    ticketFare: pnrData.data.pnrResponse.ticketFare,
+                    bookingQuota: pnrData.data.pnrResponse.quota,
+                    bookingClass: pnrData.data.pnrResponse.class
+                }
+            data.bookingDetails = obj;
+            return data;
+        }
+        return {};
+    }
+};
+
+
 
 module.exports = new DataFormatHelper();
