@@ -8,7 +8,7 @@ exports.getTrainInfo = async (req, res) => {
     const envUrl = process.env.GET_TRAIN_INFO;
     const trainNumber = req.params.number;
     const baseUrl = envUrl.replace('{trainNumber}', trainNumber);
-   
+
     try {
         const response = await axios.get(baseUrl);
         const trainData = response.data;
@@ -24,7 +24,7 @@ exports.getTrainRoutInfo = async (req, res) => {
     const trainNumber = req.params.number;
     const envUrl = process.env.GET_TRAIN_INFO;
     const baseUrl = envUrl.replace('{trainNumber}', trainNumber);
-   
+
     try {
         const response = await axios.get(baseUrl);
         const trainData = response.data;
@@ -65,7 +65,7 @@ exports.getTrainCurrentLocation = async (req, res) => {
             try {
                 const response = await axios.get(baseUrl);
                 const locationData = response.data;
-               
+
                 formattedData.trainStatus = DataFormatHelper.currentTrainStatus(locationData);
                 res.json(formattedData);
 
@@ -83,22 +83,38 @@ exports.getTrainCurrentLocation = async (req, res) => {
 exports.getPNRInfo = async (req, res) => {
     const pnrNumber = req.body.pnrNumber;
     const envurl = process.env.GET_PNR_INFO;
-     try {
-    const baseUrl = envurl.replace('{pnrNumber}', pnrNumber);
-    const requestBody = {
-      proPlanName: "CP8",
-      emailId: "",
-      tempToken: ""
-    };
+    try {
+        const baseUrl = envurl.replace('{pnrNumber}', pnrNumber);
+        const requestBody = {
+            proPlanName: "CP8",
+            emailId: "",
+            tempToken: ""
+        };
 
-    const response = await axios.post(baseUrl, requestBody);
-    const pnrData = response.data;
+        const response = await axios.post(baseUrl, requestBody);
+        const pnrData = response.data;
 
-    const formattedData = DataFormatHelper.getPNRInfo(pnrData);
+        const formattedData = DataFormatHelper.getPNRInfo(pnrData);
 
-    res.json(formattedData);
-  } catch (error) {
-    console.error("Error fetching PNR data:", error.message);
-    res.status(500).json({ error: "Failed to fetch PNR info" });
-  }
+        res.json(formattedData);
+    } catch (error) {
+        console.error("Error fetching PNR data:", error.message);
+        res.status(500).json({ error: "Failed to fetch PNR info" });
+    }
+}
+
+exports.getBetweenTrain = async (req, res) => {
+    const fromStation = req.body.fromStation;
+    const toStation = req.body.toStation;
+    const baseUrlTrain = process.env.GET_BETWEEN_TRAIN
+        .replace('{fromStation}', fromStation)
+        .replace('{toStation}', toStation);
+    try {
+        const response = await axios.get(baseUrlTrain);
+        const trainData = DataFormatHelper.getBetweenTrain(response.data);
+        res.json(trainData);
+    } catch (error) {
+        console.error('Error fetching train information:', error);
+        res.status(500).json({ error: 'Failed to retrieve train information' });
+    }
 }

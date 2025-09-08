@@ -14,6 +14,7 @@ router.get("/train/getTrainInfo/:number", (req, res) => trainController.getTrain
 router.get("/train/getTrainRouteInfo/:number", (req, res) => trainController.getTrainRoutInfo(req, res));
 router.post("/train/getTrainCurrentLocation", (req, res) => trainController.getTrainCurrentLocation(req, res));
 router.post("/train/getPNRInfo", (req, res) => trainController.getPNRInfo(req, res));
+router.post("/train/getBetweenTrain", (req, res) => trainController.getBetweenTrain(req, res));
 // Protected routes
 router.get("/feedback/getAll", authenticateToken, (req, res) => feedback.getAll(req, res));
 router.delete("/feedback/delete/:id", authenticateToken, (req, res) => feedback.deletedFeedback(req, res));

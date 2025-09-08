@@ -161,6 +161,36 @@ class DataFormatHelper {
         }
         return {};
     }
+
+    getBetweenTrain(trainData) {
+
+        const data = trainData.split("~^");
+        if(data.length === 1){
+            return { message: "No trains found" };
+        }
+        const basicdata = data[0].split("~");
+        const obj = {
+            fromStation: basicdata[1] + " - " + basicdata[2],
+            toStation: basicdata[3] + " - " + basicdata[4],
+        };
+
+        const formattedData = data.slice(1).map((train) => {
+            const trainDetails = train.split("~");
+            return {
+                trainNumber: trainDetails[0],
+                trainName: trainDetails[1],
+                from: trainDetails[2] + " - " + trainDetails[3],
+                to: trainDetails[4] + " - " + trainDetails[5],
+                arrivedStation: trainDetails[6] + " - " + trainDetails[7],
+                destinationStation: trainDetails[8] + " - " + trainDetails[9],
+                arrived: trainDetails[10].replace(".", ":"),
+                reached: trainDetails[11].replace(".", ":"),
+                duration: trainDetails[12].replace(".", ":"),
+            };
+        });
+        obj.data = formattedData;
+       return obj;
+    }
 };
 
 
