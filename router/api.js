@@ -5,6 +5,7 @@ const router = express.Router();
 const feedback = require("../controller/feedbackController");
 const mailer = require("../controller/mailController");
 const trainController = require("../controller/trainController");
+const pdfController = require("../controller/examController");
 
 // Public routes
 router.post("/feedback/create", (req, res) => feedback.create(req, res));
@@ -20,4 +21,11 @@ router.get("/feedback/getAll", authenticateToken, (req, res) => feedback.getAll(
 router.delete("/feedback/delete/:id", authenticateToken, (req, res) => feedback.deletedFeedback(req, res));
 router.get("/mail/getAll", authenticateToken, (req, res) => mailer.getEmails(req, res));
 router.delete("/mail/delete/:id", authenticateToken, (req, res) => mailer.deleteEmail(req, res));
+
+router.get("/exam/getAllExam", (req, res) => pdfController.getAllExam(req, res));
+router.post("/exam/createExam", (req, res) => pdfController.createExam(req, res));
+router.put("/exam/updateExam/:id", (req, res) => pdfController.updateExam(req, res));
+router.delete("/exam/deleteExam/:id", (req, res) => pdfController.deleteExam(req, res));
+router.get("/exam/getExamById/:id", (req, res) => pdfController.getExamById(req, res));
+router.post("/exam/suggestion", (req, res) => pdfController.postExamSuggestion(req, res));
 module.exports = router;
