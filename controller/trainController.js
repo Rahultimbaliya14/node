@@ -65,7 +65,13 @@ exports.getTrainCurrentLocation = async (req, res) => {
             try {
                 const response = await axios.get(baseUrl);
                 const locationData = response.data;
-
+                if (locationData != null || locationData != undefined) {
+                   const fullRoute = process.env.GET_TRAIN_FULL_ROUTE;
+                   const fullRouteUrl = fullRoute.replace('{trainNumber}', trainNumber).replace('{date}', date);
+                   const fullRouteResponse = await axios.get(fullRouteUrl);
+                   const fullRouteData = fullRouteResponse.data;
+                   formattedData.fullRouteData = fullRouteData.full_route;
+                }   
                 formattedData.trainStatus = DataFormatHelper.currentTrainStatus(locationData);
                 res.json(formattedData);
 
