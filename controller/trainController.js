@@ -129,6 +129,8 @@ exports.getBetweenTrain = async (req, res) => {
                     const trainInfo = response.data;
                     const formattedData = DataFormatHelper.getTrainInfo(trainInfo);
                     element.runOn = formattedData.runOn;
+                    element.trainDuration = formattedData.duration;    
+                    element.travelingKMS = formattedData.travelingKMS;
                 } catch (error) {
                     console.error(`Error fetching info for train ${trainNumber}:`, error.message);
                 }
