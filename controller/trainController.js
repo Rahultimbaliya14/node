@@ -66,12 +66,12 @@ exports.getTrainCurrentLocation = async (req, res) => {
                 const response = await axios.get(baseUrl);
                 const locationData = response.data;
                 if (locationData != null || locationData != undefined) {
-                   const fullRoute = process.env.GET_TRAIN_FULL_ROUTE;
-                   const fullRouteUrl = fullRoute.replace('{trainNumber}', trainNumber).replace('{date}', date);
-                   const fullRouteResponse = await axios.get(fullRouteUrl);
-                   const fullRouteData = fullRouteResponse.data;
-                   formattedData.fullRouteData = fullRouteData.full_route;
-                }   
+                    const fullRoute = process.env.GET_TRAIN_FULL_ROUTE;
+                    const fullRouteUrl = fullRoute.replace('{trainNumber}', trainNumber).replace('{date}', date);
+                    const fullRouteResponse = await axios.get(fullRouteUrl);
+                    const fullRouteData = fullRouteResponse.data;
+                    formattedData.fullRouteData = fullRouteData.full_route;
+                }
                 formattedData.trainStatus = DataFormatHelper.currentTrainStatus(locationData);
                 res.json(formattedData);
 
@@ -118,6 +118,23 @@ exports.getBetweenTrain = async (req, res) => {
     try {
         const response = await axios.get(baseUrlTrain);
         const trainData = DataFormatHelper.getBetweenTrain(response.data);
+        console.log(trainData.data.length);
+        if (trainData.data.length > 0) {
+            const envUrl = process.env.GET_TRAIN_INFO;
+            for (const element of trainData.data) {
+                const trainNumber = element.trainNumber;
+                const baseUrl = envUrl.replace('{trainNumber}', trainNumber);
+                try {
+                    const response = await axios.get(baseUrl);
+                    const trainInfo = response.data;
+                    const formattedData = DataFormatHelper.getTrainInfo(trainInfo);
+                    element.runOn = formattedData.runOn;
+                } catch (error) {
+                    console.error(`Error fetching info for train ${trainNumber}:`, error.message);
+                }
+            }
+            console.log("Updated train data:", trainData.data);
+        }
         res.json(trainData);
     } catch (error) {
         console.error('Error fetching train information:', error);
