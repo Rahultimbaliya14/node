@@ -118,7 +118,6 @@ exports.getBetweenTrain = async (req, res) => {
     try {
         const response = await axios.get(baseUrlTrain);
         const trainData = DataFormatHelper.getBetweenTrain(response.data);
-        console.log(trainData.data.length);
         if (trainData.data.length > 0) {
             const envUrl = process.env.GET_TRAIN_INFO;
             for (const element of trainData.data) {
@@ -131,6 +130,8 @@ exports.getBetweenTrain = async (req, res) => {
                     element.runOn = formattedData.runOn;
                     element.trainDuration = formattedData.duration;    
                     element.travelingKMS = formattedData.travelingKMS;
+                    element.fromStationDepature = formattedData.departureTime;
+                    element.toStationArrival = formattedData.arrivalTime;
                 } catch (error) {
                     console.error(`Error fetching info for train ${trainNumber}:`, error.message);
                 }
