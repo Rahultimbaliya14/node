@@ -2,6 +2,7 @@
 require("dotenv").config({ path: ".env" });
 const router = require("./router/api");
 const routerAuth = require("./router/auth");
+const routerCertverseAuth = require("./router/certverseauth");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 
@@ -9,11 +10,12 @@ const app = require("express")();
 
 app.use((req, res, next) => {
 
-   const origin = req.headers.origin;
-
-  // If request has no origin and you want to block it:
-  if (!origin) {
-    return res.status(403).send('Direct browser access not allowed');
+  const isDev = process.env.DEVELOPMENT === 'true';
+  if (!isDev) {
+    const origin = req.headers.origin;
+    if (!origin) {
+      return res.status(403).send('Direct browser access not allowed');
+    }
   }
   
     res.header('Access-Control-Allow-Origin', '*');
@@ -55,5 +57,6 @@ app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use('/api', router);
 app.use('/auth', routerAuth);
+app.use('/certverse/auth', routerCertverseAuth);
 
 module.exports = app;
