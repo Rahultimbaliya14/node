@@ -2,6 +2,28 @@ class DataFormatHelper {
     getTrainInfo(trainData) {
         let data = trainData.split("~~~~~~~~");
         var splitDate = data[0].split("~");
+        var split2 = data[1].split("~");
+        var coachData = [];
+        if(split2.length > 38){
+            var coachInitial = split2[38].split(":");
+            if(coachInitial.length > 0){
+                coachInitial = coachInitial.filter((el) => {
+                    return el != "";
+                });
+            }
+            coachInitial.forEach(element => {
+                var coachInfo = element.split(",");
+                //remove the empty string from array
+                coachInfo = coachInfo.filter((el) => {
+                    return el != "";
+                });
+                //if the coachInfo length are less then 3 then add replication of first index value
+                while(coachInfo.length < 3){
+                    coachInfo.push(coachInfo[0]);
+                }
+                coachData.push(coachInfo);
+            });
+        }
         if (splitDate.find(num => num === "Train not found")) {
             return { status: 404, message: "Train not found" };
         }
@@ -44,7 +66,8 @@ class DataFormatHelper {
             arrivalTime: `${arrivalRaw.replace(".", ":")} - ${arrivalDayLabel}`,
             duration: durationRaw.replace(".", ":"),
             travelingKMS: data2[18] ?? null,
-            runOn: activeDays
+            runOn: activeDays,
+            coachInfo: coachData
         };
         return responseData;
     }
