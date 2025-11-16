@@ -1,4 +1,3 @@
-
 require("dotenv").config({ path: ".env" });
 const router = require("./router/api");
 const routerAuth = require("./router/auth");
