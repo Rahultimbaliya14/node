@@ -1,7 +1,6 @@
 require("dotenv").config({ path: ".env" });
 const router = require("./router/api");
 const routerAuth = require("./router/auth");
-const routerCertverseAuth = require("./router/certverseauth");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 
@@ -41,7 +40,6 @@ const corsOptions = {
     if (allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
-      console.log('Blocked by CORS:', origin);
       callback(new Error('Not allowed by CORS'));
     }
   },
@@ -56,6 +54,5 @@ app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use('/api', router);
 app.use('/auth', routerAuth);
-app.use('/certverse/auth', routerCertverseAuth);
 
 module.exports = app;
